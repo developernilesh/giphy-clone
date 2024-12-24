@@ -2,8 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGif } from "../context/GifContext";
 import Gif from "../components/Gif";
-import { HiMiniChevronDown, HiMiniChevronUp } from "react-icons/hi2";
+import {
+  HiMiniChevronDown,
+  HiMiniChevronUp,
+  HiMiniHeart,
+} from "react-icons/hi2";
 import { HiOutlineExternalLink } from "react-icons/hi";
+import { FaPaperPlane } from "react-icons/fa";
+import { IoCodeSharp } from "react-icons/io5";
 
 const contentType = ["gif", "sticker", "text"];
 
@@ -13,7 +19,7 @@ const SingleGIF = () => {
   const [relatedGifs, setRelatedGifs] = useState([]);
   const [readMore, setReadMore] = useState(false);
 
-  const { gif } = useGif();
+  const { gif, favourites, addToFavourites } = useGif();
 
   const fetchGif = async () => {
     const gifId = slug.split("-");
@@ -32,6 +38,14 @@ const SingleGIF = () => {
     fetchGif();
   }, []);
 
+  const shareGif = () => {
+    // Assignment
+  };
+
+  const EmbedGif = () => {
+    // Assignment
+  };
+
   return (
     <div className="grid grid-cols-4 my-10 gap-4">
       <div className="hidden sm:block">
@@ -49,7 +63,7 @@ const SingleGIF = () => {
               </div>
             </div>
             {singleGif?.user?.description && (
-              <p className="py-4 whitespace-pre-line text-sm text-gray-400">
+              <div className="py-4 whitespace-pre-line text-sm text-gray-400">
                 {readMore
                   ? singleGif?.user?.description
                   : singleGif?.user?.description.slice(0, 100) +
@@ -70,7 +84,7 @@ const SingleGIF = () => {
                     )}
                   </div>
                 )}
-              </p>
+              </div>
             )}
           </>
         )}
@@ -99,10 +113,58 @@ const SingleGIF = () => {
           <div className="w-full sm:w-3/4">
             <div className="faded-text truncate mb-2">{singleGif.title}</div>
             <Gif gif={singleGif} hover={false} />
+            {/* Mobile UI */}
+            <div className="flex sm:hidden gap-1">
+              <img
+                src={singleGif?.user?.avatar_url}
+                alt={singleGif?.user?.display_name}
+                className="h-14"
+              />
+              <div className="px-2">
+                <div className="font-bold">{singleGif?.user?.display_name}</div>
+                <div className="faded-text">@{singleGif?.user?.username}</div>
+              </div>
+              <button className="ml-auto">
+                <FaPaperPlane size={25} />
+              </button>
+            </div>
+          </div>
+          <div className="hidden sm:flex flex-col gap-5 mt-6">
+            <button
+              onClick={() => addToFavourites(singleGif.id)}
+              className="flex gap-5 items-center font-bold text-lg"
+            >
+              <HiMiniHeart
+                size={30}
+                className={`${
+                  favourites?.includes(singleGif.id) ? "text-red-500" : ""
+                }`}
+              />
+              Favorite
+            </button>
+            <button
+              onClick={shareGif} // Assignment
+              className="flex gap-6 items-center font-bold text-lg"
+            >
+              <FaPaperPlane size={25} />
+              Share
+            </button>
+            <button
+              onClick={EmbedGif} // Assignment
+              className="flex gap-5 items-center font-bold text-lg"
+            >
+              <IoCodeSharp size={30} />
+              Embed
+            </button>
           </div>
         </div>
         <div>
           <span className="font-extrabold">Related GIFs</span>
+          <div className="columns-2 md:columns-3 gap-2">
+            {relatedGifs.slice(1).map((item) => (
+              <Gif gif={item} key={item.id} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
