@@ -10,6 +10,8 @@ import {
 import { HiOutlineExternalLink } from "react-icons/hi";
 import { FaPaperPlane } from "react-icons/fa";
 import { IoCodeSharp } from "react-icons/io5";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const contentType = ["gif", "sticker", "text"];
 
@@ -39,7 +41,21 @@ const SingleGIF = () => {
   }, []);
 
   const shareGif = () => {
-    // Assignment
+    const currentUrl = window.location.href;
+    navigator.clipboard
+      .writeText(currentUrl)
+      .then(() => {
+        toast.success("URL copied to clipboard!", {
+          position: "top-right",
+          autoClose: 2000,
+        });
+      })
+      .catch((err) => {
+        toast.error("Failed to copy the URL. Please try again.", {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      });
   };
 
   const EmbedGif = () => {
@@ -167,6 +183,8 @@ const SingleGIF = () => {
           </div>
         </div>
       </div>
+
+      <ToastContainer />
     </div>
   );
 };
