@@ -52,14 +52,33 @@ const SingleGIF = () => {
       })
       .catch((err) => {
         toast.error("Failed to copy the URL. Please try again.", {
-          position: "top-center",
+          position: "top-right",
           autoClose: 2000,
         });
       });
   };
 
   const EmbedGif = () => {
-    // Assignment
+    const currentUrl = window.location.href;
+    
+    const gifIdMatch = currentUrl.match(/\/gif\/.*-([a-zA-Z0-9]+)$/);
+    if (!gifIdMatch || gifIdMatch.length < 2) {
+      toast.error("Failed to Embed Code. Please try again.", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+      return;
+    }
+    const gifId = gifIdMatch[1];
+    
+    const embedCode = `<div style="width: 100%; height: 0; padding-bottom: 71%; position: relative"><iframe src="https://giphy.com/embed/${gifId}" width="100%" height="100%" style="position: absolute" frameborder="0" class="giphy-embed" allowfullscreen></iframe></div><p><a href="${currentUrl}">via GIPHY</a></p>`;
+
+    navigator.clipboard.writeText(embedCode).then(() => {
+      toast.success("Embed code copied to clipboard!", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    });
   };
 
   return (
