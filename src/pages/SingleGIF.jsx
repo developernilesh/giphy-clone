@@ -62,6 +62,7 @@ const SingleGIF = () => {
     const currentUrl = window.location.href;
     
     const gifIdMatch = currentUrl.match(/\/gif\/.*-([a-zA-Z0-9]+)$/);
+    
     if (!gifIdMatch || gifIdMatch.length < 2) {
       toast.error("Failed to Embed Code. Please try again.", {
         position: "top-right",
