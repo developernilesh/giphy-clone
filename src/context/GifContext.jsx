@@ -26,7 +26,7 @@ const GifContextProvider = ({ children }) => {
 
   const gif = new GiphyFetch(import.meta.env.VITE_GIPHY_KEY);
   const [gifs, setGifs] = useState([])
-  const [filter, setFilter] = useState(filters[0].value);
+  const [filter, setFilter] = useState(null);
   const [favourites, setFavourites] = useState(null);
 
   const addToFavourites = (id) => {
