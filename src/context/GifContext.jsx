@@ -1,12 +1,33 @@
 import { GiphyFetch } from "@giphy/js-fetch-api";
 import { createContext, useContext, useEffect, useState } from "react";
 
+const filters = [
+  {
+    title: "GIFs",
+    value: "gifs",
+    background:
+      "bg-gradient-to-tr from-purple-500 via-purple-600 to-purple-500",
+  },
+  {
+    title: "Stickers",
+    value: "stickers",
+    background: "bg-gradient-to-tr from-teal-500 via-teal-600 to-teal-500",
+  },
+  {
+    title: "Text",
+    value: "text",
+    background: "bg-gradient-to-tr from-blue-500 via-blue-600 to-blue-500",
+  },
+];
+
 const GifContext = createContext();
 
 const GifContextProvider = ({ children }) => {
+  
+
   const gif = new GiphyFetch(import.meta.env.VITE_GIPHY_KEY);
   const [gifs, setGifs] = useState([])
-  const [filter, setFilter] = useState(null);
+  const [filter, setFilter] = useState(filters[0].value);
   const [favourites, setFavourites] = useState(null);
 
   const addToFavourites = (id) => {
@@ -29,7 +50,7 @@ const GifContextProvider = ({ children }) => {
   
 
   const values = {
-    gif, gifs, setGifs, filter, setFilter, favourites, setFavourites,addToFavourites
+    gif, gifs, setGifs, filters, filter, setFilter, favourites, setFavourites,addToFavourites
   };
   return <GifContext.Provider value={values}>{children}</GifContext.Provider>;
 };

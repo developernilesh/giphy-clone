@@ -2,27 +2,8 @@ import React from "react";
 import { useGif } from "../context/GifContext";
 import { HiMiniArrowTrendingUp } from "react-icons/hi2";
 
-const filters = [
-  {
-    title: "GIFs",
-    value: "gifs",
-    background:
-      "bg-gradient-to-tr from-purple-500 via-purple-600 to-purple-500",
-  },
-  {
-    title: "Stickers",
-    value: "stickers",
-    background: "bg-gradient-to-tr from-teal-500 via-teal-600 to-teal-500",
-  },
-  {
-    title: "Text",
-    value: "text",
-    background: "bg-gradient-to-tr from-blue-500 via-blue-600 to-blue-500",
-  },
-];
-
 const FilterGif = ({ alignLeft = false, showTrending = false }) => {
-  const { filter, setFilter } = useGif();
+  const { filters, filter, setFilter } = useGif();
   return (
     <div
       className={`flex my-3 gap-3 ${alignLeft ? "" : "justify-end"} ${
@@ -41,9 +22,10 @@ const FilterGif = ({ alignLeft = false, showTrending = false }) => {
       )}
 
       <div className="flex min-w-80 rounded-full bg-gray-800">
-        {filters.map((fltr) => {
+        {filters.map((fltr, index) => {
           return (
             <span
+              key={index}
               onClick={() => setFilter(fltr.value)}
               className={`${
                 filter === fltr.value ? fltr.background : ""
