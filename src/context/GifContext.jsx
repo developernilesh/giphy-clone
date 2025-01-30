@@ -23,7 +23,6 @@ const filters = [
 const GifContext = createContext();
 
 const GifContextProvider = ({ children }) => {
-  
 
   const gif = new GiphyFetch(import.meta.env.VITE_GIPHY_KEY);
   const [gifs, setGifs] = useState([])
