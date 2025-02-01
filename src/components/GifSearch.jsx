@@ -12,7 +12,6 @@ const GifSearch = () => {
     if (query.trim() === "") {
       return;
     }
-
     navigate(`/search/${query}`);
   };
 

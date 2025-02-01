@@ -9,7 +9,7 @@ const Navbar = () => {
   const [categories, setCategories] = useState([]);
   const [showCategories, setShowCategories] = useState(false);
 
-  const { gif } = useGif();
+  const { gif, setFilter } = useGif();
 
   const fetchCategories = async () => {
     const { data } = await gif.categories();
@@ -25,7 +25,7 @@ const Navbar = () => {
       <div className="relative flex gap-4 justify-between items-center mb-2">
         <Link to="/" className="flex gap-2">
           <img className="w-8" src={logo} alt="GiphyLogo" />
-          <h1 className="text-5xl font-bold tracking-tight cursor-pointer">
+          <h1 className="text-5xl font-bold tracking-tight cursor-pointer" onClick={() => setFilter('')}>
             GIPHY
           </h1>
         </Link>

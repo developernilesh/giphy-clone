@@ -23,7 +23,7 @@ const Search = () => {
 
   useEffect(() => {
     fetchSearchResults();
-  }, [query]);
+  }, [query, filter]);
   
   return (
     <div className="my-4">
