@@ -20,17 +20,30 @@ const SingleGIF = () => {
   const [singleGif, setSingleGif] = useState({});
   const [relatedGifs, setRelatedGifs] = useState([]);
   const [readMore, setReadMore] = useState(false);
+  const [offset, setOffset] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const { gif, favourites, addToFavourites } = useGif();
 
   const fetchGif = async () => {
     const gifId = slug.split("-");
     const { data } = await gif.gif(gifId[gifId.length - 1]);
-    const { data: related } = await gif.related(gifId[gifId.length - 1], {
-      limit: 10,
-    });
     setSingleGif(data);
-    setRelatedGifs(related);
+  };
+
+  const fetchRelatedGifs = async () => {
+    setLoading(true);
+    const gifId = slug.split("-");
+    const { data: related } = await gif.related(gifId[gifId.length - 1], {
+      limit: 20,
+      offset: offset
+    });
+    if (offset === 0) {
+      setRelatedGifs(related);
+    } else {
+      setRelatedGifs(prev => [...prev, ...related]);
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -38,7 +51,30 @@ const SingleGIF = () => {
       throw new Error("Invalid Content Type");
     }
     fetchGif();
-  }, []);
+    fetchRelatedGifs();
+  }, [slug]);
+
+  // Infinite scroll logic for related GIFs
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight - 100 && !loading
+      ) {
+        setOffset(prevOffset => prevOffset + 20);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [loading]);
+
+  // Fetch more related GIFs when offset changes
+  useEffect(() => {
+    if (offset > 0) {
+      fetchRelatedGifs();
+    }
+  }, [offset]);
 
   const shareGif = () => {
     const currentUrl = window.location.href;
